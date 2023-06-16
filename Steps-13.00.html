@@ -1,0 +1,75 @@
+
+Create Dax Measure Tables
+13
+<p><img src="https://app.colaberry.com/uploads/ProjectStepsImages/1229/13/1.jpg" style="width: 50%;"></p><p><br></p><p class="MsoNormal" style="margin-bottom: 0in; line-height: normal; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="font-size:13.5pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#283C46;mso-font-kerning:0pt;mso-ligatures:none">Steps<br>
+&nbsp;Select the Master Data Table under the fields pane by clicking on it<br>
+&nbsp;From the Power BI desktop ribbon, Home tab click on New measure<br>
+&nbsp;The formula bar appears at the top of the report canvas.<br>&nbsp;Fill in all the DAX formulas provided below, one at a time, and when you
+finish Press Enter or select&nbsp; &nbsp;Commit (checkmark icon) in the formula bar. &nbsp;<br>
+&nbsp;After creating each measure choose the necessary format and decimal for
+each value (measure)<br>
+&nbsp;Save<br>
+<!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--><o:p></o:p></span></p><p class="MsoNormal" style="margin-bottom: 0in; line-height: normal; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="font-size:13.5pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#283C46;mso-font-kerning:0pt;mso-ligatures:none">ASD
+Pop = SUM ('Master Data'[Autistic Population])<br>
+<!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--><o:p></o:p></span></p><p class="MsoNormal" style="margin-bottom: 0in; line-height: normal; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="font-size:13.5pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#283C46;mso-font-kerning:0pt;mso-ligatures:none">Total
+Population = SUM ('Master Data'[Population])<br>
+<!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--><o:p></o:p></span></p><p class="MsoNormal" style="margin-bottom: 0in; line-height: normal; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="font-size:13.5pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#283C46;mso-font-kerning:0pt;mso-ligatures:none">ASD% =
+FORMAT (Divide([ASD Pop],[Total Population],0),"0.00%")<br>
+<!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--><o:p></o:p></span></p><p class="MsoNormal" style="margin-bottom: 0in; line-height: normal; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="font-size:13.5pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#283C46;mso-font-kerning:0pt;mso-ligatures:none">Population
+YoY% =<br>
+&nbsp;VAR CurrentYear = MAX('Master Data'[Year])<br>
+&nbsp;VAR LastYear = MAX('Master Data'[Year]) - 1<br>
+&nbsp;VAR CurrentYearTotal = CALCULATE(SUM('Master Data'[Population]), 'Master
+Data'[Year] = CurrentYear)<br>
+&nbsp;VAR LastYearTotal = CALCULATE(SUM('Master Data'[Population]), 'Master
+Data'[Year] = LastYear)<br>
+&nbsp;RETURN<br>
+&nbsp;IF(ISBLANK(LastYearTotal), BLANK(), DIVIDE(CurrentYearTotal -
+LastYearTotal, LastYearTotal))<br>
+<!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--><o:p></o:p></span></p><p class="MsoNormal" style="margin-bottom: 0in; line-height: normal; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="font-size:13.5pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#283C46;mso-font-kerning:0pt;mso-ligatures:none">&nbsp;Arrow
+ASD YoY = SWITCH(TRUE(), [ASD Pop YoY%] &lt;0, UNICHAR(9662),[ASD Pop YoY%] =0,&nbsp; &nbsp;UNICHAR(9666), UNICHAR(9652))<br>
+<!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--><o:p></o:p></span></p><p class="MsoNormal" style="margin-bottom: 0in; line-height: normal; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="font-size:13.5pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#283C46;mso-font-kerning:0pt;mso-ligatures:none">&nbsp;Arrow
+Population YoY = SWITCH(TRUE(), [Population YoY%] &lt;0,
+UNICHAR(9662),[Population YoY%] =0, UNICHAR(9666), UNICHAR(9652))<br>
+<!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--><o:p></o:p></span></p><p class="MsoNormal" style="margin-bottom: 0in; line-height: normal; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="font-size:13.5pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#283C46;mso-font-kerning:0pt;mso-ligatures:none">&nbsp;ASD
+Pop YoY% =<br>
+&nbsp;VAR CurrentYear = MAX('Master Data'[Year])<br>
+&nbsp;VAR LastYear = MAX('Master Data'[Year]) - 1<br>
+&nbsp;VAR CurrentYearTotal = CALCULATE(SUM('Master Data'[Autistic Population]),
+'Master Data'[Year] =&nbsp; &nbsp;CurrentYear)<br>
+&nbsp;VAR LastYearTotal = CALCULATE(SUM('Master Data'[Autistic Population]),
+'Master Data'[Year] =&nbsp; &nbsp;LastYear)<br>
+&nbsp;RETURN<br>
+&nbsp;IF(ISBLANK(LastYearTotal), BLANK(), DIVIDE(CurrentYearTotal -
+LastYearTotal, LastYearTotal))<br>
+<!--[if !supportLineBreakNewLine]--></span></p><p class="MsoNormal" style="margin-bottom: 0in; line-height: normal; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="font-size:13.5pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#283C46;mso-font-kerning:0pt;mso-ligatures:none"><!--[if !supportLineBreakNewLine]--></span></p><p class="MsoNormal" style="margin-bottom: 0in; line-height: normal; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="font-size:13.5pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#283C46;mso-font-kerning:0pt;mso-ligatures:none"><!--[if !supportLineBreakNewLine]--></span></p><p class="MsoNormal" style="margin-bottom: 0in; line-height: normal; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="font-size:13.5pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#283C46;mso-font-kerning:0pt;mso-ligatures:none"><!--[if !supportLineBreakNewLine]--></span></p><p class="MsoNormal" style="margin-bottom: 0in; line-height: normal; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="font-size:13.5pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#283C46;mso-font-kerning:0pt;mso-ligatures:none"><!--[if !supportLineBreakNewLine]--></span></p><p class="MsoNormal" style="margin-bottom: 0in; line-height: normal; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="font-size:13.5pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#283C46;mso-font-kerning:0pt;mso-ligatures:none"><!--[if !supportLineBreakNewLine]--></span></p><p class="MsoNormal" style="margin-bottom: 0in; line-height: normal; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="font-size:13.5pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#283C46;mso-font-kerning:0pt;mso-ligatures:none"><!--[if !supportLineBreakNewLine]--></span></p><p class="MsoNormal" style="margin-bottom: 0in; line-height: normal; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="font-size:13.5pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#283C46;mso-font-kerning:0pt;mso-ligatures:none"><!--[if !supportLineBreakNewLine]--></span></p><p class="MsoNormal" style="margin-bottom: 0in; line-height: normal; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="font-size:13.5pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#283C46;mso-font-kerning:0pt;mso-ligatures:none"><!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--><o:p></o:p></span></p><p class="MsoNormal" style="margin-bottom: 0in; line-height: normal; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="font-size:13.5pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#283C46;mso-font-kerning:0pt;mso-ligatures:none">Gif
+DAX ASD Pop<o:p></o:p></span></p><p class="MsoNormal"><o:p>&nbsp;</o:p><img src="https://app.colaberry.com/uploads/ProjectStepsImages/1229/13/2.gif" style="width: 50%;"></p><p class="MsoNormal"><br></p><p class="MsoNormal"><o:p><br></o:p></p><p class="MsoNormal"><span style="color: rgb(40, 60, 70); font-family: &quot;Segoe UI&quot;, sans-serif; font-size: 13.5pt;">&nbsp;Gif Dax Total
+Population</span></p><p class="MsoNormal"><img src="https://app.colaberry.com/uploads/ProjectStepsImages/1229/13/3.gif" style="width: 50%;"><span style="color: rgb(40, 60, 70); font-family: &quot;Segoe UI&quot;, sans-serif; font-size: 13.5pt;"><br></span></p><p class="MsoNormal"><br></p>
+
+<p><a href="https://www.youtube.com/watch?v=-epmSfp4QKI" target="_blank">Creating a DAX Measures Table In Power BI</a><br></p>
+
